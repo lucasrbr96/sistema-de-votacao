@@ -3,6 +3,9 @@ package com.challenge.vote.voting.session.service.impl;
 import com.challenge.vote.voting.session.domain.enumeration.VoteEnum;
 import com.challenge.vote.voting.session.domain.entity.VotingSession;
 import com.challenge.vote.voting.session.domain.enumeration.VotingStatusEnum;
+import com.challenge.vote.voting.session.domain.exception.InterruptedRuntimeException;
+import com.challenge.vote.voting.session.domain.exception.NotExistOrAlreadyProcessRuntimeException;
+import com.challenge.vote.voting.session.domain.exception.VotingSessionNotFoundRuntimeException;
 import com.challenge.vote.voting.session.repository.VoteRepository;
 import com.challenge.vote.voting.session.repository.VotingSessionRepository;
 import com.challenge.vote.voting.session.restController.AgendaRestClient;
@@ -34,8 +37,9 @@ public class VotingSessionServiceImpl implements VotingSessionService {
     }
 
     public VotingSession findById(final Long id){
+        log.trace("Finding ID {}", id);
         Optional<VotingSession> votingSessionOptional = this.repository.findById(id);
-        return votingSessionOptional.orElseThrow(()-> new RuntimeException("Not found " + id));
+        return votingSessionOptional.orElseThrow(()-> new VotingSessionNotFoundRuntimeException("Not found " + id));
     }
 
     public void openSession(final Long idAgenda,final Long seconds){
@@ -49,9 +53,10 @@ public class VotingSessionServiceImpl implements VotingSessionService {
                 try {
                     Thread.sleep(seconds *1000);
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    log.error("Error during sleep");
+                    throw new InterruptedRuntimeException("Error during sleep");
                 }
-
+                log.trace("End of waiting time");
                 VotingSession votingSessionInProgress = findById(idAgenda);
                 votingSessionInProgress.setStatus(VotingStatusEnum.CLOSED);
                 VoteEnum voteEnum = voteRepository.sessionResult(votingSessionInProgress.getId());
@@ -65,7 +70,7 @@ public class VotingSessionServiceImpl implements VotingSessionService {
             });
 
         }else {
-            throw new RuntimeException("Agenda does not exist or has already process");
+            throw new NotExistOrAlreadyProcessRuntimeException("Agenda does not exist or has already process");
         }
     }
 

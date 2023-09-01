@@ -1,6 +1,6 @@
 package com.challenge.vote.agenda.service.impl;
 
-import com.challenge.vote.agenda.domain.dto.AgendaRequestDTO;
+import com.challenge.vote.agenda.domain.dto.AgendaSaveOrUpdateDTO;
 import com.challenge.vote.agenda.domain.dto.AgendaResponseDTO;
 import com.challenge.vote.agenda.domain.entity.Agenda;
 import com.challenge.vote.agenda.repository.AgendaRepository;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class AgendaServiceImpl implements AgendaService {
@@ -32,8 +31,8 @@ public class AgendaServiceImpl implements AgendaService {
         return new AgendaResponseDTO(agenda);
     }
 
-    public AgendaResponseDTO saveOrUpdate(final AgendaRequestDTO agendaRequestDTO){
-        Agenda agenda = new Agenda(agendaRequestDTO.getTitle(), agendaRequestDTO.getDescription());
+    public AgendaResponseDTO saveOrUpdate(final AgendaSaveOrUpdateDTO agendaSaveOrUpdateDTO){
+        Agenda agenda = new Agenda(agendaSaveOrUpdateDTO.getTitle(), agendaSaveOrUpdateDTO.getDescription());
         this.repository.save(agenda);
         return new AgendaResponseDTO(agenda);
     }

@@ -8,7 +8,6 @@ import com.challenge.vote.voting.session.repository.VotingSessionRepository;
 import com.challenge.vote.voting.session.restController.AgendaRestClient;
 import com.challenge.vote.voting.session.service.VotingSessionService;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,15 +27,15 @@ public class VotingSessionServiceImpl implements VotingSessionService {
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(10); // Pool de threads
 
-    public VotingSessionServiceImpl(VotingSessionRepository repository, AgendaRestClient agendaRestClient, ThreadPoolTaskScheduler taskScheduler, VoteRepository voteRepository) {
+    public VotingSessionServiceImpl(VotingSessionRepository repository, AgendaRestClient agendaRestClient, VoteRepository voteRepository) {
         this.repository = repository;
         this.agendaRestClient = agendaRestClient;
         this.voteRepository = voteRepository;
     }
 
     public VotingSession findById(final Long id){
-        Optional<VotingSession> VotingSessionOptional = this.repository.findById(id);
-        return VotingSessionOptional.orElseThrow(()-> new RuntimeException("Not found " + id));
+        Optional<VotingSession> votingSessionOptional = this.repository.findById(id);
+        return votingSessionOptional.orElseThrow(()-> new RuntimeException("Not found " + id));
     }
 
     public void openSession(final Long idAgenda,final Long seconds){
@@ -66,7 +65,7 @@ public class VotingSessionServiceImpl implements VotingSessionService {
             });
 
         }else {
-            throw new RuntimeException("Agenda does not exist or has already been closed " + idAgenda);
+            throw new RuntimeException("Agenda does not exist or has already process");
         }
     }
 

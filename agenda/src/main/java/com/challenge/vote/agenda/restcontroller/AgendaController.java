@@ -1,9 +1,9 @@
 package com.challenge.vote.agenda.restcontroller;
 
-        import com.challenge.vote.agenda.domain.dto.AgendaRequestDTO;
+        import com.challenge.vote.agenda.domain.dto.AgendaSaveOrUpdateDTO;
         import com.challenge.vote.agenda.domain.dto.AgendaResponseDTO;
         import com.challenge.vote.agenda.service.AgendaService;
-        import com.challenge.vote.agenda.service.impl.AgendaServiceImpl;
+        import jakarta.validation.Valid;
         import org.springframework.http.HttpStatus;
         import org.springframework.http.ResponseEntity;
         import org.springframework.web.bind.annotation.*;
@@ -31,13 +31,13 @@ public class AgendaController {
         }
 
         @PostMapping
-        public ResponseEntity<AgendaResponseDTO> save(@RequestBody AgendaRequestDTO agendaRequestDTO){
-                return ResponseEntity.status(HttpStatus.CREATED).body(service.saveOrUpdate(agendaRequestDTO));
+        public ResponseEntity<AgendaResponseDTO> save(@Valid @RequestBody AgendaSaveOrUpdateDTO agendaSaveOrUpdateDTO){
+                return ResponseEntity.status(HttpStatus.CREATED).body(service.saveOrUpdate(agendaSaveOrUpdateDTO));
         }
 
         @PutMapping
-        public ResponseEntity<AgendaResponseDTO> update(@RequestBody AgendaRequestDTO agendaRequestDTO){
-                return ResponseEntity.ok(service.saveOrUpdate(agendaRequestDTO));
+        public ResponseEntity<AgendaResponseDTO> update(@Valid @RequestBody AgendaSaveOrUpdateDTO agendaSaveOrUpdateDTO){
+                return ResponseEntity.ok(service.saveOrUpdate(agendaSaveOrUpdateDTO));
         }
 
         @DeleteMapping("/{id}")

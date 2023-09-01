@@ -2,12 +2,18 @@ package com.challenge.vote.voting.session.restController;
 
 import com.challenge.vote.voting.session.domain.handlerError.ResponseHandlerError;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @RestControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -21,5 +27,16 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<ResponseHandlerError> handleException(RuntimeException ex, WebRequest request) {
         String bodyOfResponse = "Unexpected error, call responsible";
         return ResponseEntity.internalServerError().body(new ResponseHandlerError(bodyOfResponse));
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        List<ResponseHandlerError> errors = new ArrayList<>();
+        ex.getBindingResult().getAllErrors().forEach(error ->{
+            String fieldName = ((FieldError) error).getField();
+            errors.add(new ResponseHandlerError(String.format("Field %s is required", fieldName)));
+        });
+        return ResponseEntity.badRequest().body(errors);
     }
 }

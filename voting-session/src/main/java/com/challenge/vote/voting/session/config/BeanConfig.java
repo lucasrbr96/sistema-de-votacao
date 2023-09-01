@@ -14,12 +14,4 @@ public class BeanConfig {
     public RestTemplate restTemplate(){
         return new RestTemplate();
     }
-
-    @Bean
-    public ThreadPoolTaskScheduler taskScheduler(){
-
-        ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
-        threadPoolTaskScheduler.setPoolSize(5);
-        return threadPoolTaskScheduler;
-    }
 }

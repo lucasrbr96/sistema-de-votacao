@@ -1,12 +1,10 @@
-package com.challenge.vote.voting.session.service;
+package com.challenge.vote.voting.session.restController;
 
 import com.challenge.vote.voting.session.domain.enumeration.VoteEnum;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.HashMap;
 
 @Service
 public class AgendaRestClient {
@@ -37,4 +35,5 @@ public class AgendaRestClient {
         Boolean result = poolResult.equals(VoteEnum.YES) ? Boolean.TRUE : Boolean.FALSE;
         restTemplate.put(agendaURL.concat("v1/result/" + id), result);
     }
+
 }

@@ -3,6 +3,7 @@ package com.challenge.vote.agenda.restcontroller;
         import com.challenge.vote.agenda.domain.dto.AgendaRequestDTO;
         import com.challenge.vote.agenda.domain.dto.AgendaResponseDTO;
         import com.challenge.vote.agenda.service.AgendaService;
+        import com.challenge.vote.agenda.service.impl.AgendaServiceImpl;
         import org.springframework.http.HttpStatus;
         import org.springframework.http.ResponseEntity;
         import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class AgendaController {
         }
 
         @DeleteMapping("/{id}")
-        public ResponseEntity<?> deleteById(@PathVariable Long id){
+        public ResponseEntity<Object> deleteById(@PathVariable Long id){
                 service.deleteById(id);
                 return ResponseEntity.noContent().build();
         }
@@ -51,13 +52,13 @@ public class AgendaController {
         }
 
         @GetMapping("/check/{id}")
-        public ResponseEntity check(@PathVariable("id") Long id){
+        public ResponseEntity<Object> check(@PathVariable("id") Long id){
                 return  ResponseEntity.ok(service.check(id));
         }
 
         @PutMapping("/result/{id}")
-        public ResponseEntity getResultSession(@PathVariable("id") Long id, @RequestBody Boolean result){
-                this.service.getResult(id, result);
+        public ResponseEntity<Object> setResultSession(@PathVariable("id") Long id, @RequestBody Boolean result){
+                this.service.setResult(id, result);
                 return ResponseEntity.status(HttpStatus.OK).build();
         }
 

@@ -29,7 +29,7 @@
 					"response": []
 				},
 				{
-					"name": "Agento to Vote",
+					"name": "Agenda to Vote",
 					"request": {
 						"method": "GET",
 						"header": [],

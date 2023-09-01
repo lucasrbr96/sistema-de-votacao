@@ -5,4 +5,8 @@
 docker-compose up
 
 # Ferramenta
-Existe uma collection do postman para auxiliar na utilização das APIs
+Existe uma collection do postman para auxiliar na utilização das APIs<br>
+
+# Documentação de API
+API de sessão e de votação: <a target="_blank" href="http://localhost:8081/swagger-ui/index.html">Clique Aqui</a> <br>
+API de gerenciamento de pauta: <a target="_blank" href="http://localhost:8080/swagger-ui/index.html">Clique Aqui</a> 

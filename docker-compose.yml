@@ -1,0 +1,36 @@
+version: '3'
+services:
+  agenda:
+    build: ./agenda
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    networks:
+      - microservices_network
+    depends_on:
+      - db_postgres
+
+  voting_session:
+    build: ./voting-session
+    restart: on-failure
+    ports:
+      - "8081:8081"
+    networks:
+      - microservices_network
+    depends_on:
+      - db_postgres
+
+  db_postgres:
+    image: "postgres:15-alpine3.17"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_USER: postgres
+      POSTGRES_DB: voting-session-db
+    networks:
+      - microservices_network
+
+networks:
+  microservices_network:
+    name: microservices_network
